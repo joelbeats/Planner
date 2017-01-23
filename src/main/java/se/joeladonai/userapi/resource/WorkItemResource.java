@@ -19,16 +19,20 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import se.joeladonai.userapi.model.WorkItem;
 import se.joeladonai.userapi.model.WorkItem.WorkItemStatus;
 import se.joeladonai.userapi.service.UserService;
 import se.joeladonai.userapi.service.WorkItemService;
 
+@Secured
+@Component
 @Path("/workitems")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class WorkItemResource {
+	
 	@Autowired
 	WorkItemService workItemService;
 	@Autowired

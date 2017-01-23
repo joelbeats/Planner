@@ -9,14 +9,14 @@ public class Token {
 
 	private String access_token;
 	private String expiration_time;
-	
+
 	public Token() {
 		this.access_token = generateToken();
 		this.expiration_time = ExpirationTimeHelper.exTimeGenerate();
 	}
 
 	private String generateToken() {
-		return UUID.randomUUID().toString();
+		return UUID.randomUUID().toString().replace("-", "");
 	}
 
 	public String getAccess_token() {
@@ -35,9 +35,4 @@ public class Token {
 		this.expiration_time = expiration_time;
 	}
 
-	
-	
-	
-	
 }
-

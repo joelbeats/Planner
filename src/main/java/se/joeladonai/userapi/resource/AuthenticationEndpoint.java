@@ -22,71 +22,47 @@ import se.joeladonai.userapi.service.UserService;
 @Path("/authentication")
 @Component
 public class AuthenticationEndpoint {
-	
+
 	@Autowired
 	private UserService userService;
-	
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response authenticateUser(Credentials credentials) throws Exception {
-        String username = credentials.getUsername();
-        String password = credentials.getPassword();
-        System.out.println(username + " : " + password);
-        // Authenticate the user, issue a token and return a response
-        return authenticate(username, password);
-    }
 
-    @POST
-    @Produces("application/json")
-    @Consumes("application/x-www-form-urlencoded")
-    public Response authenticateUser(@FormParam("username") String username, 
-                                     @FormParam("password") String password) throws Exception {
-    	return authenticate(username, password);
-    }
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response authenticateUser(Credentials credentials) throws Exception {
+		String username = credentials.getUsername();
+		String password = credentials.getPassword();
+		// Authenticate the user, issue a token and return a response
+		return authenticate(username, password);
+	}
 
-    private Response authenticate(String username, String password) throws Exception {
-   
-    		User user = userService.getUserByName(username);
-    		
-        	String userPasswordInDb = user.getPassword();
-        	String saltInDb = user.getSalt();
-        	
-        	
-        	String hashedInputPassword = EncryptHelper.hashPassword(password.toCharArray(), Base64.decodeBase64(saltInDb));
-        	
-        	System.out.println("");
-        	System.out.println("");
-        	System.out.println("");
-        	System.out.println("----------------------------------");
-        	System.out.println("userPasswordInDb: " + userPasswordInDb);
-        	System.out.println("saltInDb: " +saltInDb);
-        	System.out.println(hashedInputPassword + " ====> hashedInputPassword");
-        	System.out.println(userPasswordInDb + " ====> userPasswordInDb");
-        	System.out.println("----------------------------------");
-        	System.out.println("");
-        	System.out.println("");
-        	System.out.println("");
-        	
-        	if(hashedInputPassword.equals(userPasswordInDb)){
-        		Token token  = new Token();
-        		System.out.println("access-token: " + token.getAccess_token());
-        		System.out.println("expirationTime: " + token.getExpiration_time());
-        		
-    			user.setToken(token.getAccess_token());
-    			user.setExpirationTime(token.getExpiration_time());
-    			
-    			System.out.println("access-token in user: " + user.getToken());
-        		System.out.println("expirationTime in user: " + user.getExpirationTime());
-    			
-        		user.setFirstname("adonai");
-    			userService.updateUser(user.getId(), user);
-    			return Response.ok(token).build();
-        	}else {
-                return Response.status(Status.UNAUTHORIZED).entity("Your username or password is not valid").build();
-        	
-        }   
-    }
+	@POST
+	@Produces("application/json")
+	@Consumes("application/x-www-form-urlencoded")
+	public Response authenticateUser(@FormParam("username") String username, @FormParam("password") String password)
+			throws Exception {
+		return authenticate(username, password);
+	}
 
- 
+	private Response authenticate(String username, String password) throws Exception {
+
+		User user = userService.getUserByName(username);
+
+		String userPasswordInDb = user.getPassword();
+		String saltInDb = user.getSalt();
+		String hashedInputPassword = EncryptHelper.hashPassword(password.toCharArray(), Base64.decodeBase64(saltInDb));
+
+		if (hashedInputPassword.equals(userPasswordInDb)) {
+			Token token = new Token();
+			user.setToken(token.getAccess_token());
+			user.setExpirationTime(token.getExpiration_time());
+			user.setFirstname("adonai");
+			userService.updateUser(user.getId(), user);
+			return Response.ok(token).build();
+		} else {
+			return Response.status(Status.UNAUTHORIZED).entity("Your username or password is not valid").build();
+
+		}
+	}
+
 }

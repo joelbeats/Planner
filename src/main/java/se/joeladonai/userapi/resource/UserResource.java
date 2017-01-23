@@ -34,9 +34,9 @@ import se.joeladonai.userapi.service.UserService;
 public class UserResource {
 
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	@Autowired
-	TeamService teamService;
+	private TeamService teamService;
 
 	@POST
 	public Response createUser(User user, @Context UriInfo uriInfo) throws Exception {
@@ -66,12 +66,12 @@ public class UserResource {
 
 	@GET
 	@Path("/find")
-	public List<User> findUserByFirstNameOrLastNameOrUserName(
-			@BeanParam UserFilterBean filterBean) throws Exception {
-		return userService.getUserByUsernameAndFirstnameAndLastname(filterBean.getUsername(), filterBean.getFirstname(), filterBean.getLastname());
+	public List<User> findUserByFirstNameOrLastNameOrUserName(@BeanParam UserFilterBean filterBean) throws Exception {
+		return userService.getUserByUsernameAndFirstnameAndLastname(filterBean.getUsername(), filterBean.getFirstname(),
+				filterBean.getLastname());
 
 	}
-	
+
 	@GET
 	@Path("/team/{teamId}")
 	public List<User> getAllUsersFromTeam(@PathParam("teamId") Long teamId) throws Exception {

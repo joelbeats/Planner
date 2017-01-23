@@ -20,8 +20,8 @@ import org.springframework.stereotype.Component;
 
 import se.joeladonai.userapi.model.Team;
 import se.joeladonai.userapi.service.TeamService;
-import se.joeladonai.userapi.service.UserService;
 
+@Secured
 @Component
 @Path("/teams")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -29,9 +29,7 @@ import se.joeladonai.userapi.service.UserService;
 public class TeamResource {
 
 	@Autowired
-	UserService userService;
-	@Autowired
-	TeamService teamService;
+	private TeamService teamService;
 
 	@POST
 	public Response createTeam(Team team, @Context UriInfo uriInfo) throws Exception {

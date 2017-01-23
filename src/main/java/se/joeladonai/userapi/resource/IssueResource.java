@@ -16,12 +16,15 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import se.joeladonai.userapi.model.Issue;
 import se.joeladonai.userapi.model.WorkItem;
 import se.joeladonai.userapi.service.IssueService;
 import se.joeladonai.userapi.service.WorkItemService;
 
+@Secured
+@Component
 @Path("/issues")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)

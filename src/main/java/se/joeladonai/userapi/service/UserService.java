@@ -44,7 +44,8 @@ public class UserService {
 
 		try {
 			user.setSalt(EncryptHelper.generateSalt());
-			user.setPassword(EncryptHelper.hashPassword(user.getPassword().toCharArray(), Base64.decodeBase64(user.getSalt())));
+			user.setPassword(
+					EncryptHelper.hashPassword(user.getPassword().toCharArray(), Base64.decodeBase64(user.getSalt())));
 			return userRepository.save(user);
 
 		} catch (DataAccessException e) {
@@ -53,30 +54,27 @@ public class UserService {
 			throw new RepositoryException(e.getMessage());
 		}
 	}
-	
-	
-	
+
 	@Transactional
 	public User findUserByToken(String token) {
 		return userRepository.findUserByToken(token);
 	}
-	
+
 	@Transactional
 	public User updateUser(Long id, User user) throws ServiceException, RepositoryException {
 
 		if (!userRepository.exists(id)) {
 			throw new ServiceException("User with id: " + id + " doesn't exist");
 		}
-		System.out.println("hej");
+
 		if (user.getUsername().length() < 10) {
 			throw new ServiceException("Username too short, must be 10 characters");
 		}
-		System.out.println("hej1");
+
 		if (user.getIsActive() != true) {
-			System.out.println("hej2");
+
 			for (WorkItem workItem : workItemRepository.findByUserId(user.getId())) {
 				if (workItem.equals(null)) {
-					System.out.println("hej3");
 
 				}
 				workItem.setStatus(WorkItem.WorkItemStatus.UNSTARTED);
@@ -85,7 +83,6 @@ public class UserService {
 		}
 
 		try {
-			System.out.println("hej4");
 			User updatedUser = userRepository.findOne(id);
 			updatedUser.setIsActive(user.getIsActive());
 			updatedUser.setIdNumber(user.getIdNumber());
@@ -120,7 +117,7 @@ public class UserService {
 		}
 
 	}
-	
+
 	@Transactional
 	public User getUserByName(String username) {
 		return userRepository.findByUsername(username);
@@ -136,6 +133,7 @@ public class UserService {
 		}
 	}
 
+	@Transactional
 	public List<User> getUserByUsernameAndFirstnameAndLastname(String username, String firstname, String lastname)
 			throws ServiceException, RepositoryException {
 

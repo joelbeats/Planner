@@ -13,19 +13,18 @@ public class User extends AbstractEntity {
 
 	@Column(unique = true)
 	private String username;
-	
+
 	private String password;
-	
+
 	private String salt;
 
 	private String firstname;
 
 	private String lastname;
-	
+
 	private String token;
-	
+
 	private String expirationTime;
-	
 
 	@ManyToOne()
 	@JoinColumn(name = "team_id")
@@ -40,7 +39,7 @@ public class User extends AbstractEntity {
 		this.token = "";
 		this.expirationTime = "";
 	}
-	
+
 	public User(Long idNumber, String username, String password, String firstname, String lastname, Team team) {
 		this.idNumber = idNumber;
 		this.username = username;
@@ -112,7 +111,7 @@ public class User extends AbstractEntity {
 	public void setTeam(Team team) {
 		this.team = team;
 	}
-	
+
 	public String getToken() {
 		return token;
 	}
