@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 
 import se.joeladonai.userapi.model.User;
+import se.joeladonai.userapi.resource.Secured;
 
+@Secured
 public interface UserRepository extends CrudRepository<User, Long> {
 
 	List<User> findByUsernameStartingWithAndFirstnameStartingWithAndLastnameStartingWith(String username,
@@ -17,6 +19,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 	
 	User findByUsername(String username);
 	
+	User findUserByToken(String token);
 	
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import se.joeladonai.userapi.model.WorkItem.WorkItemStatus;
 import se.joeladonai.userapi.repository.TeamRepository;
 import se.joeladonai.userapi.repository.UserRepository;
 import se.joeladonai.userapi.repository.WorkItemRepository;
+import se.joeladonai.userapi.secure.EncryptHelper;
 
 @Service
 public class UserService {
@@ -41,6 +43,8 @@ public class UserService {
 		}
 
 		try {
+			user.setSalt(EncryptHelper.generateSalt());
+			user.setPassword(EncryptHelper.hashPassword(user.getPassword().toCharArray(), Base64.decodeBase64(user.getSalt())));
 			return userRepository.save(user);
 
 		} catch (DataAccessException e) {
@@ -49,20 +53,30 @@ public class UserService {
 			throw new RepositoryException(e.getMessage());
 		}
 	}
-
+	
+	
+	
+	@Transactional
+	public User findUserByToken(String token) {
+		return userRepository.findUserByToken(token);
+	}
+	
 	@Transactional
 	public User updateUser(Long id, User user) throws ServiceException, RepositoryException {
 
 		if (!userRepository.exists(id)) {
 			throw new ServiceException("User with id: " + id + " doesn't exist");
 		}
-
+		System.out.println("hej");
 		if (user.getUsername().length() < 10) {
 			throw new ServiceException("Username too short, must be 10 characters");
 		}
+		System.out.println("hej1");
 		if (user.getIsActive() != true) {
+			System.out.println("hej2");
 			for (WorkItem workItem : workItemRepository.findByUserId(user.getId())) {
 				if (workItem.equals(null)) {
+					System.out.println("hej3");
 
 				}
 				workItem.setStatus(WorkItem.WorkItemStatus.UNSTARTED);
@@ -71,12 +85,15 @@ public class UserService {
 		}
 
 		try {
+			System.out.println("hej4");
 			User updatedUser = userRepository.findOne(id);
 			updatedUser.setIsActive(user.getIsActive());
 			updatedUser.setIdNumber(user.getIdNumber());
 			updatedUser.setUsername(user.getUsername());
 			updatedUser.setFirstname(user.getFirstname());
 			updatedUser.setLastname(user.getLastname());
+			updatedUser.setExpirationTime(user.getExpirationTime());
+			updatedUser.setToken(user.getToken());
 			updatedUser.setTeam(user.getTeam());
 
 			return userRepository.save(updatedUser);

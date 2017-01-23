@@ -27,23 +27,6 @@ public class User extends AbstractEntity {
 	private String expirationTime;
 	
 
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	public String getExpirationTime() {
-		return expirationTime;
-	}
-
-	public void setExpirationTime(String expirationTime) {
-		this.expirationTime = expirationTime;
-	}
-
 	@ManyToOne()
 	@JoinColumn(name = "team_id")
 	private Team team;
@@ -54,15 +37,20 @@ public class User extends AbstractEntity {
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.team = team;
+		this.token = "";
+		this.expirationTime = "";
 	}
 	
 	public User(Long idNumber, String username, String password, String firstname, String lastname, Team team) {
 		this.idNumber = idNumber;
 		this.username = username;
+		this.salt = "";
 		this.password = password;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.team = team;
+		this.token = "";
+		this.expirationTime = "";
 	}
 
 	public String getPassword() {
@@ -123,5 +111,21 @@ public class User extends AbstractEntity {
 
 	public void setTeam(Team team) {
 		this.team = team;
+	}
+	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public String getExpirationTime() {
+		return expirationTime;
+	}
+
+	public void setExpirationTime(String expirationTime) {
+		this.expirationTime = expirationTime;
 	}
 }

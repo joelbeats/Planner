@@ -1,10 +1,7 @@
 package se.joeladonai.userapi.secure;
 
-import java.io.Serializable;
 
-public class Credentials implements Serializable {
-	
-	private static final long serialVersionUID = 7896502094211406306L;
+public class Credentials {
 	
 	private String username;
     private String password;

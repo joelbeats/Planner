@@ -2,6 +2,9 @@ package se.joeladonai.userapi.secure;
 
 import java.util.UUID;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Token {
 
 	private String access_token;
@@ -9,7 +12,7 @@ public class Token {
 	
 	public Token() {
 		this.access_token = generateToken();
-		this.expiration_time = new Long(System.currentTimeMillis()+600*1000).toString();
+		this.expiration_time = ExpirationTimeHelper.exTimeGenerate();
 	}
 
 	private String generateToken() {
@@ -31,6 +34,8 @@ public class Token {
 	public void setExpiration_time(String expiration_time) {
 		this.expiration_time = expiration_time;
 	}
+
+	
 	
 	
 	

@@ -26,6 +26,7 @@ import se.joeladonai.userapi.resource.beans.UserFilterBean;
 import se.joeladonai.userapi.service.TeamService;
 import se.joeladonai.userapi.service.UserService;
 
+@Secured
 @Component
 @Path("/users")
 @Consumes(MediaType.APPLICATION_JSON)
