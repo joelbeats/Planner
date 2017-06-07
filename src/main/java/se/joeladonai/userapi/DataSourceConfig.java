@@ -22,7 +22,7 @@ import javax.sql.DataSource;
 public class DataSourceConfig {
 	public static final String databaseUrl = "jdbc:mysql://localhost:3306/userapi?useSSL=false";
 	public static final String databaseUsername = "root";
-	public static final String databasePassword = "Jovlas81";
+	public static final String databasePassword = "";
 
 	@Bean
 	public DataSource dataSource() {
